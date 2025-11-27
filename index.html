@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Shaddai | Aromas & Decoracion</title>
+    <title>Shaddai | Aromas & Deco</title>
     <link rel="icon" href="logo.icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
@@ -12,9 +12,7 @@
         /* ================= EXPLICACIÓN DE CSS Y VARIABLES ================= */
         
         :root {
-            /* --bg-body: El color de fondo de toda la página.
-               Usamos un lila muy pálido para que contraste con el violeta fuerte.
-            */
+            /* --bg-body: El color de fondo de toda la página. */
             --bg-body: #fbf5ff; 
 
             /* --bg-card: Fondo blanco para las tarjetas de productos */
@@ -26,23 +24,17 @@
             /* --border: Color de las líneas divisorias y bordes de inputs */
             --border: #e0ccff;
 
-            /* --gold: COLOR PRIMARIO SOLICITADO (#8F00FF). 
-               Se usa para iconos, textos destacados y detalles.
-            */
+            /* --gold: COLOR PRIMARIO SOLICITADO (#8F00FF). */
             --gold: #8F00FF;
 
-            /* --black: COLOR SECUNDARIO SOLICITADO (#7F00FF).
-               Se usa para botones principales (Comprar, Guardar) para que resalten.
-            */
+            /* --black: COLOR SECUNDARIO SOLICITADO (#7F00FF). */
             --black: #7F00FF;
 
             /* --mob-cols: Variable dinámica para cambiar entre 1 o 2 columnas en celular */
             --mob-cols: 1; 
         }
 
-        /* body.dark-mode: Sobrescribe las variables cuando activas el modo oscuro.
-           Invierte los colores a fondos oscuros y textos claros.
-        */
+        /* body.dark-mode: Sobrescribe las variables cuando activas el modo oscuro. */
         body.dark-mode {
             --bg-body: #12001b;
             --bg-card: #1f0a2e;
@@ -385,6 +377,7 @@
     <div id="paused-screen">
         <h1>TIENDA CERRADA</h1>
         <p id="paused-text-display">Volvemos pronto.</p>
+        <div style="margin-top:20px; font-size:0.8rem; opacity:0.3;">(Alt+N)</div>
     </div>
 
     <div class="floating-menu-pc">
@@ -394,6 +387,9 @@
         </div>
         <div class="float-btn" id="fav-btn-pc" onclick="toggleFavView()">
             <i class="fas fa-heart"></i>
+        </div>
+        <div class="float-btn" onclick="openMap()">
+            <i class="fas fa-map-marker-alt"></i>
         </div>
     </div>
 
@@ -436,7 +432,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2025 Shaddai Aromas</p>
+        <p>© 2025 Shaddai Aromas</p>
     </footer>
 
     <div class="bottom-nav">
@@ -452,6 +448,10 @@
         <div class="bn-item" id="fav-btn-mob" onclick="toggleFavView()">
             <i class="fas fa-heart"></i>
             <span>Favoritos</span>
+        </div>
+        <div class="bn-item" onclick="openMap()">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Ubicación</span>
         </div>
         <div class="bn-item" onclick="window.open('https://wa.me/541131746665','_blank')">
             <i class="fab fa-whatsapp"></i>
@@ -812,6 +812,13 @@
         saveCart();
     };
 
+    // FUNCION DE MAPA CON ALERTA DE APROXIMACIÓN
+    window.openMap = () => {
+        alert("La ubicación es un aproximado al local");
+        // Abre el mapa buscando la zona
+        window.open("https://www.google.com/maps/search/?api=1&query=Moreno+La+Reja+Buenos+Aires", "_blank");
+    };
+
     window.toggleMaintenance = () => { tempConfig.paused = !tempConfig.paused; alert("Cambio pendiente. Toca GUARDAR GENERAL."); };
     window.toggleGlobalDarkMode = () => { tempConfig.darkMode = !tempConfig.darkMode; alert("Cambio pendiente. Toca GUARDAR GENERAL."); };
     window.toggleMobileCols = () => { tempConfig.mobileCols = (tempConfig.mobileCols === 1) ? 2 : 1; alert("Cambio pendiente. Toca GUARDAR GENERAL."); };
@@ -935,6 +942,7 @@
         document.getElementById('cart-modal').style.display='flex';
     };
 
+    // FUNCION DE CHECKOUT A WHATSAPP
     window.checkout = () => { 
         let m="Hola! Pedido:%0A",t=0; 
         cart.forEach(p=>{const pr=getPrice(p)*p.qty;t+=pr;m+=`- ${p.nombre} (x${p.qty}) $${pr}%0A`}); 
@@ -1064,4 +1072,3 @@
 </script>
 </body>
 </html>
-
