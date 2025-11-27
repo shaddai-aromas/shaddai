@@ -4,96 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Shaddai | Aromas & Deco</title>
-    <link rel="icon" href="logo.icon" />
+    <link rel="icon" href="logo.icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* ================= ESTILOS ================= */
+        /* ================= EXPLICACIÓN DE CSS Y VARIABLES ================= */
+        
         :root {
-            --bg-body: #fdfbf7;
+            /* --bg-body: El color de fondo de toda la página.
+               Usamos un lila muy pálido para que contraste con el violeta fuerte.
+            */
+            --bg-body: #fbf5ff; 
+
+            /* --bg-card: Fondo blanco para las tarjetas de productos */
             --bg-card: #ffffff;
-            --text: #4a4a4a;
-            --border: #e6e2d8;
-            --gold: #c5a028;
-            --black: #2c2c2c;
+
+            /* --text: Color del texto general (Gris oscuro/Violeta oscuro) */
+            --text: #2e0052;
+
+            /* --border: Color de las líneas divisorias y bordes de inputs */
+            --border: #e0ccff;
+
+            /* --gold: COLOR PRIMARIO SOLICITADO (#8F00FF). 
+               Se usa para iconos, textos destacados y detalles.
+            */
+            --gold: #8F00FF;
+
+            /* --black: COLOR SECUNDARIO SOLICITADO (#7F00FF).
+               Se usa para botones principales (Comprar, Guardar) para que resalten.
+            */
+            --black: #7F00FF;
+
+            /* --mob-cols: Variable dinámica para cambiar entre 1 o 2 columnas en celular */
             --mob-cols: 1; 
         }
 
+        /* body.dark-mode: Sobrescribe las variables cuando activas el modo oscuro.
+           Invierte los colores a fondos oscuros y textos claros.
+        */
         body.dark-mode {
-            --bg-body: #121212;
-            --bg-card: #1e1e1e;
-            --text: #e0e0e0;
-            --border: #333333;
-            --black: #ffffff;
+            --bg-body: #12001b;
+            --bg-card: #1f0a2e;
+            --text: #e1bee7;
+            --border: #4a0072;
+            --black: #ffffff; /* Botones blancos en modo oscuro para leerse bien */
+            --gold: #9d46ff;
         }
 
+        /* * { box-sizing: border-box }: Hace que el padding no aumente el ancho total de los elementos */
         * { box-sizing: border-box; }
 
         body {
             margin: 0; padding: 0;
-            font-family: 'Lato', sans-serif;
+            font-family: 'Lato', sans-serif; /* Tipografía principal */
             background-color: var(--bg-body);
             color: var(--text);
-            display: flex; flex-direction: column; min-height: 100vh;
-            overflow-x: hidden; width: 100%;
-            transition: background 0.3s, color 0.3s;
+            display: flex; /* Permite usar Flexbox para estructurar la página verticalmente */
+            flex-direction: column; 
+            min-height: 100vh; /* Asegura que la página mida al menos el 100% de la altura de la pantalla */
+            overflow-x: hidden; /* Evita el scroll horizontal indeseado */
+            transition: background 0.3s, color 0.3s; /* Suaviza el cambio de colores (ej. modo oscuro) */
         }
 
         /* PANTALLA DE BIENVENIDA */
         #welcome-overlay {
-            position: fixed;
+            position: fixed; /* Se queda fijo cubriendo toda la pantalla */
             top: 0; left: 0; right: 0; bottom: 0;
             background-color: var(--bg-body);
-            z-index: 999999;
+            z-index: 999999; /* Asegura que esté encima de TODO */
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.8s ease-out;
+            align-items: center; /* Centra horizontalmente */
+            justify-content: center; /* Centra verticalmente */
+            transition: opacity 0.8s ease-out; /* Efecto de desvanecimiento al irse */
         }
         .welcome-logo {
             font-family: 'Cinzel', serif;
             font-size: 3rem;
             color: var(--black);
             margin-bottom: 10px;
-            animation: fadeIn 1.5s ease;
+            animation: fadeIn 1.5s ease; /* Aplica la animación definida abajo */
             text-align: center;
         }
-        .welcome-logo span { color: var(--gold); }
-        .welcome-sub {
-            font-size: 1.2rem;
-            color: var(--text);
-            opacity: 0.8;
-            letter-spacing: 2px;
-            animation: slideUp 1.5s ease;
-            text-align: center;
-        }
+        .welcome-logo span { color: var(--gold); } /* Pinta la palabra "Aromas" del otro color */
 
+        /* Animaciones simples para la entrada */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* HEADER */
+        /* HEADER (Cabecera) */
         header {
             background: var(--bg-card);
             padding: 10px 15px;
             z-index: 100;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(143, 0, 255, 0.15); /* Sombra violeta suave abajo del header */
             display: flex; flex-direction: column; gap: 8px;
             border-bottom: 1px solid var(--border);
         }
 
         .header-top { display: flex; justify-content: center; align-items: center; width: 100%; }
-
         .brand { font-family: 'Cinzel', serif; font-size: 1.6rem; font-weight: 700; color: var(--black); text-align: center; }
         .brand span { color: var(--gold); }
 
+        /* BUSCADOR */
         .search-container { width: 100%; position: relative; }
         .search-input {
             width: 100%; padding: 8px 12px;
-            border: 1px solid var(--border); background: var(--bg-body); color: var(--text);
-            border-radius: 25px; font-size: 0.9rem; outline: none; height: 35px;
+            border: 2px solid var(--border); /* Borde más grueso */
+            background: var(--bg-body); color: var(--text);
+            border-radius: 25px; /* Bordes redondeados */
+            font-size: 0.9rem; outline: none; height: 35px;
         }
+        .search-input:focus { border-color: var(--gold); } /* Cambia color al escribir */
+
         .autocomplete-box {
             position: absolute; top: 100%; left: 0; width: 100%;
             background: var(--bg-card); border: 1px solid var(--border);
@@ -102,7 +125,7 @@
         .auto-item { padding: 10px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text); }
         .auto-item img { width: 30px; height: 30px; object-fit: cover; }
 
-        /* MENU FLOTANTE PC */
+        /* MENU FLOTANTE PC (Burbujas a la derecha) */
         .floating-menu-pc {
             position: fixed; top: 50%; right: 0; transform: translateY(-50%);
             display: flex; flex-direction: column; gap: 10px; z-index: 900;
@@ -115,31 +138,35 @@
             position: relative; width: 50px;
             transition: 0.2s;
         }
-        .float-btn.nav-fav-active { background: #e74c3c; }
-        .float-btn i { font-size: 1.4rem; }
+        .float-btn:hover { width: 60px; } /* Efecto al pasar el mouse */
+        .float-btn.nav-fav-active { background: #e74c3c; } /* Rojo si es Favoritos activo */
         .fc-badge { font-weight: bold; font-size: 0.8rem; margin-top: 2px; }
 
-        /* CATEGORIAS (PC) */
+        /* BARRA DE CATEGORIAS (PC) */
         .nav-strip {
             display: flex; gap: 10px; padding: 10px 20px;
-            overflow-x: auto; background: var(--bg-card); white-space: nowrap;
+            overflow-x: auto; /* Permite scroll horizontal si no caben */
+            background: var(--bg-card); white-space: nowrap;
             border-bottom: 1px solid var(--border);
         }
         .cat-btn {
             padding: 6px 15px; border: 1px solid var(--border);
             border-radius: 20px; cursor: pointer; background: var(--bg-body);
             color: var(--text); text-transform: capitalize; font-size: 0.9rem;
+            transition: 0.2s;
         }
-        .cat-btn.active { background: var(--gold); color: white; border-color: var(--gold); }
+        .cat-btn.active { 
+            background: var(--gold); /* Fondo activo violeta */
+            color: white; 
+            border-color: var(--gold); 
+        }
 
-        /* CATEGORIAS (MOVIL - SELECT) */
+        /* SELECTORES PARA MOVIL */
         .mob-cat-select-container {
-            display: none;
+            display: none; /* Oculto en PC */
             padding: 10px 20px;
             background: var(--bg-body);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            display: flex; align-items: center; gap: 10px;
         }
 
         .control-bar {
@@ -147,23 +174,28 @@
         }
         .sort-select { background: var(--bg-card); color: var(--text); border: 1px solid var(--border); padding: 5px; border-radius: 5px; width: 100%; }
 
-        /* GRILLA */
+        /* ESTRUCTURA PRINCIPAL (GRILLA DE PRODUCTOS) */
         .container { max-width: 1200px; margin: 0 auto; padding: 15px; flex: 1; width: 100%; }
+        
         .grid {
-            display: grid; gap: 20px;
+            display: grid; 
+            gap: 20px;
+            /* Crea columnas automáticas. Mínimo 220px de ancho cada tarjeta */
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
         }
 
-        /* TARJETA */
+        /* DISEÑO DE LA TARJETA DEL PRODUCTO */
         .card {
             background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-radius: 8px; overflow: hidden; /* Corta lo que sobresalga de los bordes redondeados */
+            box-shadow: 0 4px 15px rgba(127, 0, 255, 0.08); /* Sombra suave violeta */
             display: flex; flex-direction: column; position: relative; transition: transform 0.2s;
         }
+        .card:hover { transform: translateY(-5px); } /* Se levanta un poco al pasar el mouse */
         
         .card-img-area {
             overflow: hidden; cursor: pointer; position: relative;
-            user-select: none; -webkit-user-select: none; width: 100%;
+            user-select: none; width: 100%;
         }
         .card-img-area img { 
             width: 100%; height: 100%; object-fit: cover; pointer-events: none; 
@@ -174,12 +206,11 @@
             background: rgba(255,255,255,0.9); width: 35px; height: 35px;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
             cursor: pointer; color: #ccc; transition: all 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            font-size: 1.2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); font-size: 1.2rem;
         }
-        .card-heart.liked { color: red; }
-        .card-heart i { pointer-events: none; }
+        .card-heart.liked { color: red; } /* Corazón rojo si está likeado */
 
+        /* ETIQUETAS (Descuento, Destacado) */
         .badge-discount {
             position: absolute; top: 10px; right: 10px; background: #e74c3c; color: white;
             font-weight: bold; font-size: 0.8rem; padding: 4px 8px; border-radius: 4px; z-index: 10;
@@ -189,13 +220,10 @@
             font-weight: bold; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; z-index: 10;
         }
 
-        /* SIN STOCK */
-        .card.sin-stock .card-img-area { filter: grayscale(1); } 
+        /* ESTILOS SIN STOCK */
+        .card.sin-stock .card-img-area { filter: grayscale(1); } /* Pone la imagen en blanco y negro */
         .card.sin-stock .btn-buy { 
-            pointer-events: none; 
-            opacity: 0.5; 
-            background: #999; 
-            cursor: not-allowed;
+            pointer-events: none; opacity: 0.5; background: #999; cursor: not-allowed;
         }
         
         .stock-overlay {
@@ -204,6 +232,7 @@
             padding: 10px 20px; border: 2px solid white; z-index: 10; white-space: nowrap;
         }
 
+        /* INFO DEL PRODUCTO */
         .card-info { padding: 15px; flex: 1; display: flex; flex-direction: column; }
         .card-title { font-weight: bold; font-size: 1.1rem; margin-bottom: 5px; color: var(--text); }
         
@@ -211,21 +240,30 @@
         .old-price { text-decoration: line-through; color: #999; font-size: 0.9rem; margin-right: 5px; }
         .current-price { color: var(--gold); font-weight: 700; font-size: 1.2rem; }
 
-        .btn-buy { background: var(--black); color: var(--bg-card); border: none; padding: 10px; width: 100%; cursor: pointer; font-weight: bold; border-radius: 4px; }
-        .btn-desc { background: transparent; border: 1px solid var(--border); color: var(--text); padding: 5px; width: 100%; margin-bottom: 5px; cursor: pointer; border-radius: 4px; }
+        /* BOTONES DE LA TARJETA */
+        .btn-buy { 
+            background: var(--black); /* Violeta oscuro #7F00FF */
+            color: white; border: none; padding: 10px; width: 100%; 
+            cursor: pointer; font-weight: bold; border-radius: 4px; 
+        }
+        .btn-desc { 
+            background: transparent; border: 1px solid var(--border); color: var(--text); 
+            padding: 5px; width: 100%; margin-bottom: 5px; cursor: pointer; border-radius: 4px; 
+        }
 
+        /* RESPONSIVE (Móvil) */
         @media (max-width: 768px) {
             .grid { grid-template-columns: repeat(var(--mob-cols), 1fr); gap: 15px; } 
-            .floating-menu-pc { display: none; }
+            .floating-menu-pc { display: none; } /* Ocultar menú de PC en móvil */
             .header-top { justify-content: center; }
-            .card-img-area { height: 500px; }
-            .grid[style*="--mob-cols: 2"] .card-img-area { height: 250px; }
+            .card-img-area { height: 500px; } /* Imagen alta en móvil */
+            .grid[style*="--mob-cols: 2"] .card-img-area { height: 250px; } /* Imagen normal si son 2 columnas */
             .nav-strip { display: none; }
-            .mob-cat-select-container { display: flex; }
+            .mob-cat-select-container { display: flex; } /* Mostrar select en móvil */
         }
 
         @media (min-width: 769px) {
-            .bottom-nav { display: none !important; }
+            .bottom-nav { display: none !important; } /* Ocultar barra inferior en PC */
             .mob-cat-select-container { display: none !important; }
             header { flex-direction: row; }
             .search-container { max-width: 400px; margin: 0 20px; }
@@ -234,7 +272,7 @@
 
         footer { text-align: center; padding: 20px; background: var(--bg-card); color: var(--text); border-top: 1px solid var(--border); margin-top: auto; padding-bottom: 80px; }
         
-        /* BOTTOM NAV */
+        /* BARRA INFERIOR (Móvil) */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; width: 100%; height: 60px;
             background: var(--bg-card); border-top: 1px solid var(--border);
@@ -243,9 +281,7 @@
         }
         .bn-item { display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; color: var(--text); gap: 3px; cursor: pointer; user-select: none; position: relative; }
         .bn-item i { font-size: 1.2rem; transition: color 0.2s; }
-        
         .bn-item.nav-fav-active i { color: red; }
-        .bn-item.nav-fav-active span { color: red; font-weight: bold; }
         
         .mob-badge {
             background: red; color: white; font-size: 0.65rem; font-weight: bold;
@@ -254,10 +290,65 @@
             position: absolute; top: -5px; right: 5px;
         }
 
-        /* MODALES */
+        /* VENTANAS MODALES (Popups) */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 5000; align-items: center; justify-content: center; }
         .modal-content { background: var(--bg-card); color: var(--text); padding: 20px; width: 90%; max-width: 700px; border-radius: 10px; max-height: 80vh; overflow-y: auto; }
 
+        /* PANTALLA DE TIENDA CERRADA */
+        #paused-screen { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: var(--bg-body); z-index:10000; display:none; 
+            flex-direction:column; align-items:center; justify-content:center; 
+            text-align:center; color: var(--text); 
+        }
+        #paused-screen h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            color: var(--gold); /* Título violeta brillante */
+            margin-bottom: 20px;
+        }
+        #paused-screen p {
+            font-size: 1.5rem;
+            color: var(--black);
+            max-width: 80%;
+            line-height: 1.6;
+            background: rgba(127, 0, 255, 0.05); /* Fondo muy sutil */
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px dashed var(--border);
+        }
+
+        /* ACORDEON PARA EDITAR MENSAJE (BOTÓN DESPLEGABLE) */
+        .accordion-btn {
+            background-color: var(--bg-body);
+            color: var(--text);
+            cursor: pointer;
+            padding: 15px;
+            width: 100%;
+            border: 1px solid var(--border);
+            text-align: left;
+            outline: none;
+            font-size: 1rem;
+            transition: 0.4s;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .accordion-btn:hover { background-color: rgba(143, 0, 255, 0.1); }
+        .accordion-content {
+            padding: 0 15px;
+            background-color: var(--bg-card);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            border: 1px solid var(--border);
+            border-top: none;
+            margin-bottom: 10px;
+            border-radius: 0 0 5px 5px;
+        }
+
+        /* HERRAMIENTAS DE ADMIN */
+        .admin-input { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid var(--border); background: var(--bg-body); color: var(--text); }
         .tools-wrapper { display: flex; height: 400px; gap: 20px; }
         .tools-menu { width: 30%; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
         .tool-btn { text-align: left; padding: 10px; background: transparent; border: none; color: var(--text); cursor: pointer; font-weight: bold; border-radius: 5px; }
@@ -265,24 +356,18 @@
         .tools-content-box { width: 70%; overflow-y: auto; padding: 10px; }
         .tool-panel { display: none; }
         .tool-panel.active { display: block; }
-
-        .zoom-content { background: transparent; box-shadow: none; width: auto; max-width: 800px; display: flex; justify-content: center; overflow: hidden; position: relative; }
-        .zoom-content img { max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; background: white; padding: 5px; }
-
-        #ctx-menu { display: none; position: fixed; background: var(--bg-card); border: 1px solid var(--border); box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 9999; width: 180px; border-radius: 5px; }
-        .ctx-option { padding: 10px 15px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; color: var(--text); }
-        .ctx-option:hover { background: rgba(0,0,0,0.05); color: var(--gold); }
-        .ctx-danger { color: #e74c3c; }
-
-        #paused-screen { position: fixed; top:0; left:0; width:100%; height:100%; background:var(--bg-body); z-index:10000; display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center; color: var(--text); }
-        .admin-input { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid var(--border); background: var(--bg-body); color: var(--text); }
         
         .trash-exit-btn { background: var(--gold); color: white; padding: 15px; width: 100%; text-align: center; font-weight: bold; cursor: pointer; margin-bottom: 20px; border-radius: 5px; display: none; }
         .trash-delete-all-btn { background: #e74c3c; color: white; padding: 10px; width: 100%; text-align: center; font-weight: bold; cursor: pointer; margin-bottom: 10px; border-radius: 5px; display: none; }
-        
-        .cart-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 10px 0; }
-        .cart-qty-ctrl { display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.05); padding: 5px; border-radius: 5px; }
-        .c-btn { width: 25px; height: 25px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; }
+
+        /* MENU CONTEXTUAL (Click derecho) */
+        #ctx-menu { display: none; position: fixed; background: var(--bg-card); border: 1px solid var(--border); box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 9999; width: 180px; border-radius: 5px; }
+        .ctx-option { padding: 10px 15px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; color: var(--text); }
+        .ctx-option:hover { background: rgba(143, 0, 255, 0.1); color: var(--gold); }
+        .ctx-danger { color: #e74c3c; }
+
+        .zoom-content { background: transparent; box-shadow: none; width: auto; max-width: 800px; display: flex; justify-content: center; overflow: hidden; position: relative; }
+        .zoom-content img { max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; background: white; padding: 5px; }
         .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 30px; }
         .page-btn { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); cursor: pointer; background: var(--bg-card); color: var(--text); }
         .page-btn.active { background: var(--black); color: var(--bg-body); }
@@ -296,10 +381,11 @@
     </div>
 
     <div id="ctx-menu"></div>
+    
     <div id="paused-screen">
         <h1>TIENDA CERRADA</h1>
-        <p>Volvemos pronto.</p>
-        <button onclick="loginGoogle()">Soy Admin</button>
+        <p id="paused-text-display">Volvemos pronto.</p>
+        <div style="margin-top:20px; font-size:0.8rem; opacity:0.3;">(Alt+N)</div>
     </div>
 
     <div class="floating-menu-pc">
@@ -386,7 +472,17 @@
             <h3>Panel Admin</h3>
             <button id="btn-toggle-store" onclick="toggleMaintenance()" style="width:100%; padding:15px; background:var(--black); color:var(--bg-card); font-weight:bold; margin-bottom:10px;">CARGANDO...</button>
             
-            <div class="tools-wrapper">
+            <button class="accordion-btn" onclick="toggleAccordion('close-msg-panel')">
+                Editar Mensaje de Cierre <i class="fas fa-chevron-down"></i>
+            </button>
+            <div id="close-msg-panel" class="accordion-content">
+                <div style="padding:10px 0;">
+                    <label>Mensaje para el cliente:</label>
+                    <textarea id="paused-msg-input" class="admin-input" rows="3" placeholder="Escribe el mensaje de tienda cerrada..."></textarea>
+                </div>
+            </div>
+
+            <div class="tools-wrapper" style="margin-top:10px;">
                 <div class="tools-menu">
                     <button class="tool-btn active" onclick="switchToolTab('t-view', this)">Vista</button>
                     <button class="tool-btn" onclick="switchToolTab('t-price', this)">Precios</button>
@@ -495,7 +591,8 @@
     let favorites = JSON.parse(localStorage.getItem('favs')) || [];
     let isAdmin = false;
     
-    let tempConfig = { paused: false, darkMode: false, mobileCols: 1, categories: "Perfumes,Velas,Decoración" };
+    // Configuración por defecto incluyendo mensaje de pausa
+    let tempConfig = { paused: false, pausedMessage: "Volvemos pronto.", darkMode: false, mobileCols: 1, categories: "Perfumes,Velas,Decoración" };
     let currentConfig = { ...tempConfig }; 
     
     let currentPage = 1;
@@ -540,6 +637,11 @@
         if(currentConfig.darkMode) document.body.classList.add('dark-mode'); else document.body.classList.remove('dark-mode');
         document.documentElement.style.setProperty('--mob-cols', currentConfig.mobileCols || 1);
         document.getElementById('cats-config').value = currentConfig.categories;
+        
+        // Cargar mensaje guardado
+        document.getElementById('paused-msg-input').value = currentConfig.pausedMessage || "Volvemos pronto.";
+        document.getElementById('paused-text-display').innerText = currentConfig.pausedMessage || "Volvemos pronto.";
+
         renderCategories();
         if(currentConfig.paused && !isAdmin) document.getElementById('paused-screen').style.display = 'flex';
         else document.getElementById('paused-screen').style.display = 'none';
@@ -715,8 +817,19 @@
     window.toggleGlobalDarkMode = () => { tempConfig.darkMode = !tempConfig.darkMode; alert("Cambio pendiente. Toca GUARDAR GENERAL."); };
     window.toggleMobileCols = () => { tempConfig.mobileCols = (tempConfig.mobileCols === 1) ? 2 : 1; alert("Cambio pendiente. Toca GUARDAR GENERAL."); };
     
+    // FUNCION PARA DESPLEGAR ACORDEON
+    window.toggleAccordion = (id) => {
+        const panel = document.getElementById(id);
+        if (panel.style.maxHeight){
+            panel.style.maxHeight = null;
+        } else {
+            panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+    };
+
     window.saveGlobalConfig = async () => {
         tempConfig.categories = document.getElementById('cats-config').value;
+        tempConfig.pausedMessage = document.getElementById('paused-msg-input').value; // Guardar mensaje
         await setDoc(doc(db, "config", "main"), tempConfig);
         alert("Configuración Guardada!");
     };
@@ -853,9 +966,6 @@
         document.getElementById('form-modal').style.display='flex';
     };
     
-    // ==========================================================================
-    // FUNCIÓN DE COMPRESIÓN AGRESIVA (Max 800px, Calidad 0.6)
-    // ==========================================================================
     function compressImageForFirestore(file, callback) {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -866,7 +976,6 @@
                 const canvas = document.createElement('canvas');
                 let width = img.width;
                 let height = img.height;
-                // ACHICAMOS AUN MAS PARA ASEGURAR QUE ENTRE (800px)
                 const maxWidth = 800; 
                 if (width > maxWidth) {
                     height *= maxWidth / width;
@@ -876,16 +985,12 @@
                 canvas.height = height;
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
-                // BAJAMOS CALIDAD A 0.6
                 const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.6);
                 callback(compressedDataUrl);
             };
         };
     }
 
-    // ==========================================================================
-    // GUARDAR PRODUCTO (CON VALIDACIÓN ESTRICTA Y LIMPIEZA)
-    // ==========================================================================
     window.saveProduct = async () => {
         const btn = document.getElementById('btn-save-prod');
         btn.innerText = "GUARDANDO... (ESPERA)";
@@ -909,7 +1014,6 @@
                     document.getElementById('form-modal').style.display='none'; 
                 } else {
                     await addDoc(collection(db,"productos"),d);
-                    // === AQUÍ REINICIAMOS EL FORMULARIO ===
                     document.getElementById('p-name').value = "";
                     document.getElementById('p-price').value = "";
                     document.getElementById('p-img').value = "";
@@ -928,7 +1032,6 @@
         };
 
         if (file) {
-            // BAJAMOS EL LIMITE A 300KB PARA SER SEGUROS (300 * 1024)
             if (file.size > 300 * 1024) {
                 alert("IMAGEN PESADA: Se está optimizando automáticamente para que no desaparezca. Espera un momento...");
                 compressImageForFirestore(file, (compressedImgBase64) => {
