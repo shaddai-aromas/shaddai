@@ -10,7 +10,6 @@
 
     <style>
         /* ================= EXPLICACIÓN DE CSS Y VARIABLES ================= */
-        
         :root {
             --bg-body: #fbf5ff; 
             --bg-card: #ffffff;
@@ -45,29 +44,16 @@
 
         /* EFECTO NIEVE (MODO FESTIVO) */
         .snowflake {
-            position: fixed;
-            top: -10px;
-            color: var(--gold);
-            font-size: 1em;
-            font-family: Arial;
-            text-shadow: 0 0 1px #000;
-            user-select: none;
-            z-index: 99999;
-            pointer-events: none; /* Para que no moleste al click */
-            animation-name: fall;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
+            position: fixed; top: -10px; color: var(--gold); font-size: 1em; font-family: Arial;
+            text-shadow: 0 0 1px #000; user-select: none; z-index: 99999; pointer-events: none;
+            animation-name: fall; animation-timing-function: linear; animation-iteration-count: infinite;
         }
-        
-        @keyframes fall {
-            to { transform: translateY(110vh); }
-        }
+        @keyframes fall { to { transform: translateY(110vh); } }
 
         /* PANTALLA DE BIENVENIDA */
         #welcome-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: var(--bg-body);
-            z-index: 999999;
+            background-color: var(--bg-body); z-index: 999999;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
             transition: opacity 0.8s ease-out;
@@ -99,7 +85,6 @@
             border-radius: 25px; font-size: 0.9rem; outline: none; height: 35px;
         }
         .search-input:focus { border-color: var(--gold); }
-
         .autocomplete-box {
             position: absolute; top: 100%; left: 0; width: 100%;
             background: var(--bg-card); border: 1px solid var(--border);
@@ -252,10 +237,9 @@
         .modal-content { 
             background: var(--bg-card); color: var(--text); padding: 20px; width: 90%; 
             max-width: 700px; border-radius: 10px; max-height: 80vh; overflow-y: auto; 
-            position: relative; /* Para posicionar la X */
+            position: relative; 
         }
 
-        /* Botón de Cerrar Modal (X) */
         .close-modal-x {
             position: absolute; top: 10px; right: 15px;
             font-size: 1.8rem; cursor: pointer; color: var(--text);
@@ -263,7 +247,6 @@
         }
         .close-modal-x:hover { color: red; }
 
-        /* PANTALLA TIENDA CERRADA */
         #paused-screen { 
             position: fixed; top:0; left:0; width:100%; height:100%; 
             background: var(--bg-body); z-index:10000; display:none; 
@@ -276,7 +259,7 @@
             background: rgba(127, 0, 255, 0.05); padding: 20px; border-radius: 10px; border: 1px dashed var(--border);
         }
 
-        /* ACORDEON Y ADMIN */
+        /* ADMIN */
         .accordion-btn {
             background-color: var(--bg-body); color: var(--text); cursor: pointer; padding: 15px;
             width: 100%; border: 1px solid var(--border); text-align: left; outline: none;
@@ -321,6 +304,11 @@
         .cart-qty-ctrl { display: flex; align-items: center; gap: 10px; }
         .c-btn { width: 30px; height: 30px; background: var(--bg-body); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 5px; font-weight: bold; user-select: none; }
         .c-btn:active { background: var(--gold); color: white; }
+
+        /* TABLA CUPONES */
+        .coupon-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 10px; }
+        .coupon-table th, .coupon-table td { border: 1px solid var(--border); padding: 5px; text-align: left; }
+        .badge-active { background: #27ae60; color: white; padding: 2px 5px; border-radius: 3px; font-size: 0.7rem; }
     </style>
 </head>
 <body>
@@ -448,15 +436,14 @@
                     <button class="tool-btn active" onclick="switchToolTab('t-view', this)">Vista</button>
                     <button class="tool-btn" onclick="switchToolTab('t-price', this)">Precios</button>
                     <button class="tool-btn" onclick="switchToolTab('t-cats', this)">Categorías</button>
+                    <button class="tool-btn" onclick="switchToolTab('t-coupons', this)">Cupones</button>
                 </div>
                 
                 <div class="tools-content-box">
                     <div id="t-view" class="tool-panel active">
                         <button onclick="toggleGlobalDarkMode()" style="width:100%; padding:10px; margin-bottom:5px; background:#555; color:white;">Alternar Modo Oscuro</button>
                         <button onclick="toggleMobileCols()" style="width:100%; padding:10px; margin-bottom:5px; background:var(--gold); color:white;">Vista Móvil (1 o 2 Cols)</button>
-                        
                         <button onclick="toggleFestiveMode()" style="width:100%; padding:10px; background:#e74c3c; color:white;">Alternar MODO FESTIVO</button>
-                        <p style="font-size:0.8rem; color:#888;">(Activa/Desactiva efecto de nieve)</p>
                     </div>
 
                     <div id="t-price" class="tool-panel">
@@ -476,6 +463,19 @@
                     <div id="t-cats" class="tool-panel">
                         <label>Categorías Visibles (separadas por coma):</label>
                         <input type="text" id="cats-config" class="admin-input" placeholder="Ej: Perfumes,Velas,Ofertas">
+                    </div>
+
+                    <div id="t-coupons" class="tool-panel">
+                        <button id="btn-toggle-coupons" onclick="toggleCouponsSystem()" style="width:100%; padding:10px; margin-bottom:15px; font-weight:bold; border:2px solid var(--gold);">CARGANDO...</button>
+                        
+                        <hr style="border-color:var(--border);">
+                        <h4>Crear Nuevo Cupón</h4>
+                        <input type="text" id="cup-code" class="admin-input" placeholder="Código (Ej: SALE10)">
+                        <input type="number" id="cup-val" class="admin-input" placeholder="Porcentaje de Descuento (%)">
+                        <button onclick="saveCoupon()" style="width:100%; background:var(--gold); color:white; padding:10px; border:none; margin-bottom:10px;">CREAR</button>
+                        
+                        <h4>Lista de Cupones</h4>
+                        <div id="coupons-list"></div>
                     </div>
                 </div>
             </div>
@@ -534,6 +534,16 @@
         <div class="modal-content">
             <h3>Tu Carrito</h3>
             <div id="cart-list"></div>
+            
+            <div id="cart-coupon-section" style="margin-top:20px; border-top:1px solid var(--border); padding-top:10px; display:none;">
+                <label>Cupón de Descuento:</label>
+                <div style="display:flex; gap:5px;">
+                    <input type="text" id="coupon-input" class="admin-input" placeholder="CÓDIGO" style="margin-bottom:0;">
+                    <button onclick="checkCoupon()" style="background:var(--black); color:white; border:none; padding:0 15px;">APLICAR</button>
+                </div>
+                <div id="coupon-msg" style="margin-top:5px; font-weight:bold; font-size:0.9rem;"></div>
+            </div>
+
             <h3>Total: $<span id="cart-total">0</span></h3>
             <button onclick="checkout()" style="width:100%; background:var(--gold); color:white; padding:15px; border:none; font-weight:bold;">PEDIR POR WHATSAPP</button>
         </div>
@@ -556,14 +566,16 @@
     const db = getFirestore(app);
 
     let products = [];
+    let coupons = [];
     let cart = JSON.parse(localStorage.getItem('cart')) || []; 
     let favorites = JSON.parse(localStorage.getItem('favs')) || [];
     let isAdmin = false;
     
-    // Configuración incluyendo modo festivo
-    let tempConfig = { paused: false, pausedMessage: "Volvemos pronto.", darkMode: false, mobileCols: 1, categories: "Perfumes,Velas,Decoración", festiveMode: false };
+    // Configuración incluyendo modo festivo y cupones
+    let tempConfig = { paused: false, pausedMessage: "Volvemos pronto.", darkMode: false, mobileCols: 1, categories: "Perfumes,Velas,Decoración", festiveMode: false, enableCoupons: true };
     let currentConfig = { ...tempConfig }; 
-    
+    let activeCoupon = null; // Cupón aplicado actualmente por el usuario
+
     let currentPage = 1;
     let currentFilter = 'all';
     let currentSort = 'featured'; 
@@ -592,6 +604,13 @@
         render();
     });
 
+    // CARGAR CUPONES
+    onSnapshot(collection(db, "coupons"), (snap) => {
+        coupons = [];
+        snap.forEach(d => coupons.push({id: d.id, ...d.data()}));
+        if(isAdmin) renderCouponsList();
+    });
+
     onSnapshot(doc(db, "config", "main"), (snap) => {
         if(snap.exists()) {
             currentConfig = { ...currentConfig, ...snap.data() };
@@ -602,6 +621,8 @@
 
     function applyVisualConfig() {
         updateStoreBtn();
+        updateCouponsBtn();
+
         if(currentConfig.darkMode) document.body.classList.add('dark-mode'); else document.body.classList.remove('dark-mode');
         document.documentElement.style.setProperty('--mob-cols', currentConfig.mobileCols || 1);
         document.getElementById('cats-config').value = currentConfig.categories;
@@ -621,6 +642,7 @@
         if(isAdmin) {
             document.getElementById('paused-screen').style.display = 'none';
             document.getElementById('admin-add-btn').style.display = 'flex'; 
+            renderCouponsList();
         } else {
             document.getElementById('admin-add-btn').style.display = 'none'; 
         }
@@ -631,6 +653,17 @@
         const btn = document.getElementById('btn-toggle-store');
         if(currentConfig.paused) { btn.innerText = "ABRIR TIENDA (Está Cerrada)"; btn.style.background = "var(--gold)"; } 
         else { btn.innerText = "CERRAR TIENDA (Está Abierta)"; btn.style.background = "var(--black)"; }
+    }
+
+    function updateCouponsBtn() {
+        const btn = document.getElementById('btn-toggle-coupons');
+        if(currentConfig.enableCoupons) { 
+            btn.innerText = "DESHABILITAR SISTEMA DE CUPONES (Activo)"; 
+            btn.style.background = "var(--bg-body)"; btn.style.color = "var(--text)";
+        } else { 
+            btn.innerText = "HABILITAR SISTEMA DE CUPONES (Inactivo)"; 
+            btn.style.background = "var(--gold)"; btn.style.color = "white";
+        }
     }
 
     function renderCategories() {
@@ -796,6 +829,7 @@
     window.toggleGlobalDarkMode = () => { tempConfig.darkMode = !tempConfig.darkMode; alert("Cambio pendiente. Toca GUARDAR GENERAL."); };
     window.toggleMobileCols = () => { tempConfig.mobileCols = (tempConfig.mobileCols === 1) ? 2 : 1; alert("Cambio pendiente. Toca GUARDAR GENERAL."); };
     window.toggleFestiveMode = () => { tempConfig.festiveMode = !tempConfig.festiveMode; alert("Cambio pendiente. Toca GUARDAR GENERAL."); };
+    window.toggleCouponsSystem = () => { tempConfig.enableCoupons = !tempConfig.enableCoupons; alert("Cambio pendiente. Toca GUARDAR GENERAL."); };
 
     // FUNCIONES NIEVE
     let snowInterval;
@@ -840,6 +874,7 @@
         document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         btn.classList.add('active');
+        if(id === 't-coupons') renderCouponsList();
     }
 
     window.handleSearch = (val) => {
@@ -919,10 +954,19 @@
     function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); updateCartUI(); }
 
     window.openCart = () => {
-        const l=document.getElementById('cart-list'); l.innerHTML=""; let t=0;
-        if(cart.length === 0) l.innerHTML = "<p>Carrito vacío.</p>";
+        const l=document.getElementById('cart-list'); l.innerHTML=""; 
+        let subtotal = 0;
+        let discount = 0;
+
+        if(cart.length === 0) {
+            l.innerHTML = "<p>Carrito vacío.</p>";
+            document.getElementById('cart-total').innerText="0";
+            document.getElementById('cart-coupon-section').style.display='none';
+            return document.getElementById('cart-modal').style.display='flex';
+        }
+
         cart.forEach((p)=>{ 
-            const pr = getPrice(p) * p.qty; t+=pr; 
+            const pr = getPrice(p) * p.qty; subtotal+=pr; 
             l.innerHTML += `
             <div class="cart-row">
                 <div class="cart-info-box">
@@ -936,14 +980,76 @@
                 </div>
             </div>`; 
         });
-        document.getElementById('cart-total').innerText=t; 
+
+        // LÓGICA DE CUPÓN
+        if(currentConfig.enableCoupons) {
+            document.getElementById('cart-coupon-section').style.display='block';
+            const msg = document.getElementById('coupon-msg');
+            msg.innerHTML = "";
+            
+            if(activeCoupon) {
+                const totalDesc = Math.round(subtotal * (activeCoupon.value / 100));
+                discount = totalDesc;
+                msg.innerHTML = `<span style="color:green">Cupón ${activeCoupon.code} aplicado (-$${discount})</span> <span onclick="removeCoupon()" style="color:red; cursor:pointer;">[X]</span>`;
+            }
+        } else {
+            document.getElementById('cart-coupon-section').style.display='none';
+        }
+
+        document.getElementById('cart-total').innerText = (subtotal - discount); 
         document.getElementById('cart-modal').style.display='flex';
     };
+
+    window.checkCoupon = () => {
+        const code = document.getElementById('coupon-input').value.toUpperCase();
+        const found = coupons.find(c => c.code === code);
+        if(found) {
+            activeCoupon = found;
+            openCart();
+        } else {
+            alert("Cupón no válido");
+        }
+    };
+    
+    window.removeCoupon = () => {
+        activeCoupon = null;
+        document.getElementById('coupon-input').value = "";
+        openCart();
+    };
+
+    // FUNCIONES GESTIÓN CUPONES
+    window.saveCoupon = async () => {
+        const code = document.getElementById('cup-code').value.toUpperCase();
+        const val = Number(document.getElementById('cup-val').value);
+        if(code && val) {
+            await addDoc(collection(db, "coupons"), { code, value: val });
+            alert("Cupón Creado");
+            document.getElementById('cup-code').value="";
+            document.getElementById('cup-val').value="";
+        } else { alert("Completa los datos"); }
+    }
+    
+    window.renderCouponsList = () => {
+        const l = document.getElementById('coupons-list');
+        l.innerHTML = `<table class="coupon-table"><tr><th>Código</th><th>%</th><th>Acción</th></tr></table>`;
+        const t = l.querySelector('table');
+        coupons.forEach(c => {
+            t.innerHTML += `<tr><td>${c.code}</td><td>${c.value}%</td><td><button onclick="deleteCoupon('${c.id}')" style="color:red">Borrar</button></td></tr>`;
+        });
+    }
+
+    window.deleteCoupon = async (id) => { if(confirm("Borrar?")) await deleteDoc(doc(db,"coupons",id)); }
 
     window.checkout = () => { 
         let m="Hola! Pedido:%0A",t=0; 
         cart.forEach(p=>{const pr=getPrice(p)*p.qty;t+=pr;m+=`- ${p.nombre} (x${p.qty}) $${pr}%0A`}); 
-        m+=`Total: $${t}`; 
+        
+        if(activeCoupon) {
+            const desc = Math.round(t * (activeCoupon.value / 100));
+            m+=`%0ASubtotal: $${t}%0ADescuento (${activeCoupon.code}): -$${desc}%0ATotal Final: $${t-desc}`;
+        } else {
+            m+=`Total: $${t}`; 
+        }
         window.open(`https://wa.me/541131746665?text=${m}`,'_blank'); 
     };
     
@@ -972,7 +1078,6 @@
             document.getElementById('p-price').value=p.precio; 
             document.getElementById('p-cat').value=p.categoria; 
             
-            // SE CARGA LA IMAGEN ACTUAL EN EL CAMPO OCULTO
             document.getElementById('p-current-img').value = p.image; 
             
             document.getElementById('p-desc').value=p.descripcion||""; 
@@ -1023,7 +1128,6 @@
         const price = Number(document.getElementById('p-price').value);
         const cat = document.getElementById('p-cat').value;
         
-        // RECUPERAR IMAGEN ANTERIOR SI ESTAMOS EDITANDO
         const currentImg = document.getElementById('p-current-img').value;
 
         const desc = document.getElementById('p-desc').value;
@@ -1079,12 +1183,9 @@
                 reader.readAsDataURL(file);
             }
         } else {
-            // SI NO HAY ARCHIVO NUEVO
             if(currentImg) {
-                // Si estamos editando y ya había imagen, usamos esa
                 saveData(currentImg);
             } else {
-                // Si es nuevo y no hay archivo, error
                 alert("POR FAVOR SUBE UNA IMAGEN");
                 btn.innerText = "GUARDAR";
                 btn.disabled = false;
